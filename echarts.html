@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>relationship</title>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="height:400px"></div>
+    <!--首先你需要通过script标签引入echarts主文件-->
+    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+    <!--在主文件引入后你将获得一个AMD环境，配置require.conifg如下：-->
+        <script type="text/javascript">
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+         // require.config配置后就可以通过动态加载使用echarts
+        require(
+            [
+                'echarts',
+                //'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+                'echarts/chart/force'// 使用力导向布局图就加载bar模块，按需加载,如需动态类型切换功能，别忘了同时加载相应图表
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main')); 
+                
+                var option = {
+                    title : {
+                        text: '人物关系：齐乔松',
+                        subtext: '数据来自其本人瞎写',
+                        x:'right',
+                        y:'bottom'
+                    },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: '{a} : {b}'
+                    },
+                    toolbox: {
+                        show : true,
+                        feature : {
+                            restore : {show: true},
+                            magicType: {show: true, type: ['force', 'chord']},
+                            saveAsImage : {show: true}
+                        }
+                    },
+                    legend: {
+                        x: 'left',
+                        data:['家人','朋友']
+                    },
+                    series : [
+                        {
+                            type:'force',
+                            name : "人物关系",
+                            ribbonType: false,
+                            categories : [
+                                {
+                                    name: '人物'
+                                },
+                                {
+                                    name: '家人',
+                                    symbol: 'diamond'
+                                },
+                                {
+                                    name:'朋友'
+                                }
+                            ],
+                            itemStyle: {
+                                normal: {
+                                    label: {
+                                        show: true,
+                                        textStyle: {
+                                            color: '#333'
+                                        }
+                                    },
+                                    nodeStyle : {
+                                        brushType : 'both',
+                                        borderColor : 'rgba(255,215,0,0.4)',
+                                        borderWidth : 1
+                                    }
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: false
+                                        // textStyle: null      // 默认使用全局文本样式，详见TEXTSTYLE
+                                    },
+                                    nodeStyle : {
+                                        //r: 30
+                                    },
+                                    linkStyle : {}
+                                }
+                            },
+                            minRadius : 15,
+                            maxRadius : 25,
+                            gravity: 1.1,
+                            scaling: 1.2,
+                            draggable: false,
+                            linkSymbol: 'arrow',
+                            steps: 10,
+                            coolDown: 0.9,
+                            //preventOverlap: true,
+                            nodes:[
+                                {
+                                    category:0, name: '齐乔松', value : 10,
+                                    symbol: 'image://http://b321.photo.store.qq.com/psb?/V13sQE3V1cNv1M/RrOKZzuZPFCXfttuXw4dqzRbZ6Ja0Jlz8YNVsnMGceI!/m/dEvaWr8bEQAAnull&bo=8ABAAQAAAAABB5E!&rf=photolist&t=5',
+                                    symbolSize: [20, 25],
+                                    draggable: true,
+                                    itemStyle: {
+                                        normal: {
+                                            label: {
+                                                position: 'right',
+                                                textStyle: {
+                                                    color: 'black'
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {category:1, name: '陈磊',value : 2},
+                                {category:1, name: '齐鹏',value : 3},
+                                {category:1, name: '小猴子',value : 3},
+                                {category:1, name: '鸡哥',value : 7},
+                                {category:2, name: '马哥',value : 5},
+                                {category:2, name: '波导',value : 8},
+                                {category:2, name: '金华杰',value : 9},
+                                {category:2, name: '崔珊珊',value : 4},
+                                {category:2, name: '郑林军',value : 4},
+                                {category:2, name: '凯歌',value : 1},
+                            ],
+                            links : [
+                                {source : '陈磊', target : '齐乔松', weight : 1, name: '母后', itemStyle: {
+                                    normal: {
+                                        width: 1.5,
+                                        color: 'red'
+                                    }
+                                }},
+                                {source : '齐乔松', target : '陈磊', weight : 1, name: '儿臣', itemStyle: {
+                                    normal: { color: 'red' }
+                                }},
+                                {source : '齐鹏', target : '齐乔松', weight : 2, name: '兄弟'},
+                                {source : '小猴子', target : '齐乔松', weight : 1, name: '姐姐'},
+                                {source : '鸡哥', target : '齐乔松', weight : 2},
+                                {source : '马哥', target : '齐乔松', weight : 3, name: '合伙人'},
+                                {source : '凯歌', target : '齐乔松', weight : 1},
+                                {source : '金华杰', target : '齐乔松', weight : 6, name: '左膀'},
+                                {source : '波导', target : '齐乔松', weight : 1, name: '右臂'},
+                                {source : '郑林军', target : '齐乔松', weight : 1},
+                                {source : '崔珊珊', target : '齐乔松', weight : 1},
+                                {source : '小猴子', target : '齐鹏', weight : 1},
+                                {source : '凯歌', target : '齐鹏', weight : 1},
+                                {source : '凯歌', target : '小猴子', weight : 1},
+                                {source : '凯歌', target : '崔珊珊', weight : 1},
+                                {source : '凯歌', target : '郑林军', weight : 1},
+                                {source : '波导', target : '凯歌', weight : 6},
+                                {source : '波导', target : '小猴子', weight : 1},
+                                {source : '恒哥', target : '凯歌', weight : 1}
+                            ]
+                        }
+                    ]
+                };
+        
+                // 为echarts对象加载数据 
+                myChart.setOption(option); 
+            }
+        );
+    </script>
+</body>
